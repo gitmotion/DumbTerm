@@ -56,7 +56,7 @@ jobs:
         id: docker_meta
         run: |
           TAGS="${{ env.DOCKER_IMAGE }}:${{ steps.package_version.outputs.VERSION }}"
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
             TAGS+=" ${{ env.DOCKER_IMAGE }}:latest"
           elif [ "${{ github.ref }}" = "refs/heads/testing" ]; then
             TAGS+=" ${{ env.DOCKER_IMAGE }}:testing"
