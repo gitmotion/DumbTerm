@@ -7,7 +7,7 @@ on:
       - dev # Trigger the workflow on pushes to the dev branch
 
 env:
-  DOCKER_IMAGE: dumbwareio/dumbterm
+  DOCKER_IMAGE: gitmotion/dumbterm
   PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
