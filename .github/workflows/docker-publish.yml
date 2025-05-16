@@ -4,10 +4,9 @@ on:
   push:
     branches:
       - main # Trigger the workflow on pushes to the main branch
-      - dev # Trigger the workflow on pushes to the dev branch
 
 env:
-  DOCKER_IMAGE: gitmotion/dumbterm
+  DOCKER_IMAGE: dumbwareio/dumbterm
   PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
@@ -59,9 +58,9 @@ jobs:
           echo "VERSION_TAG=${{ env.DOCKER_IMAGE }}:${{ steps.package_version.outputs.VERSION }}" >> $GITHUB_OUTPUT
           
           # Add branch-specific tags
-          if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
+          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
             echo "ADDITIONAL_TAG=${{ env.DOCKER_IMAGE }}:latest" >> $GITHUB_OUTPUT
-            echo "Using tags: ${{ env.DOCKER_IMAGE }}:${{ steps.package_version.outputs.VERSION }}, ${{ env.DOCKER_IMAGE }}:latest"
+            echo "Using tags: ${{ steps.package_version.outputs.VERSION_TAG }}, ${{ env.DOCKER_IMAGE }}:latest"
           elif [ "${{ github.ref }}" = "refs/heads/testing" ]; then
             echo "ADDITIONAL_TAG=${{ env.DOCKER_IMAGE }}:testing" >> $GITHUB_OUTPUT
             echo "Using tags: ${{ env.DOCKER_IMAGE }}:${{ steps.package_version.outputs.VERSION }}, ${{ env.DOCKER_IMAGE }}:testing"
@@ -76,7 +75,7 @@ jobs:
           platforms: ${{ env.PLATFORMS }}
           push: true
           tags: |
-            ${{ env.DOCKER_IMAGE }}:${{ steps.package_version.outputs.VERSION }}
+            ${{ steps.docker_meta.outputs.VERSION_TAG}}
             ${{ steps.docker_meta.outputs.ADDITIONAL_TAG }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
