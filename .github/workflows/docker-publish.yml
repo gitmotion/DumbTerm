@@ -3,10 +3,10 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main # Trigger the workflow on pushes to the main branch
+      - dev # Trigger the workflow on pushes to the main branch
 
 env:
-  DOCKER_IMAGE: dumbwareio/dumbterm
+  DOCKER_IMAGE: gitmotion/dumbterm
   PLATFORMS: linux/amd64,linux/arm64
 
 jobs:
@@ -58,7 +58,7 @@ jobs:
           echo "VERSION_TAG=${{ env.DOCKER_IMAGE }}:${{ steps.package_version.outputs.VERSION }}" >> $GITHUB_OUTPUT
           
           # Add branch-specific tags
-          if [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          if [ "${{ github.ref }}" = "refs/heads/dev" ]; then
             echo "ADDITIONAL_TAG=${{ env.DOCKER_IMAGE }}:latest" >> $GITHUB_OUTPUT
             echo "Using tags: ${{ steps.package_version.outputs.VERSION_TAG }}, ${{ env.DOCKER_IMAGE }}:latest"
           elif [ "${{ github.ref }}" = "refs/heads/testing" ]; then
